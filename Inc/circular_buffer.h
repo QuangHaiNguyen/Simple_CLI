@@ -33,11 +33,11 @@
 
 
 /* Global function prototype section ---------------------------------*/
-#define BUFF_SIZE 8
+#define BUFF_SIZE 128
 
 typedef struct Cir_Buff
 {
-    int buff[BUFF_SIZE];
+    char buff[BUFF_SIZE];
     int head;
     int tail;
     int count;
@@ -45,16 +45,16 @@ typedef struct Cir_Buff
 
 typedef enum CirBuff_Status
 {
-    OK = 0,
-    ERROR,
-    FULL,
-    EMPTY
+    CIR_OK = 0,
+	CIR_ERROR,
+	CIR_FULL,
+	CIR_EMPTY
 }CirBuff_Status;
 
 CirBuff_Status IsCirBuffEmpty(cir_buff * _this);
 CirBuff_Status IsCirBuffFull(cir_buff * _this);
-CirBuff_Status PushCirBuff(cir_buff * _this, int data);
-CirBuff_Status PopCirBuff(cir_buff * _this, int * data);
+CirBuff_Status PushCirBuff(cir_buff * _this, char data);
+CirBuff_Status PopCirBuff(cir_buff * _this, char * data);
 void FlushCirBuff(cir_buff * _this);
 void InitCirBuff( cir_buff * _this);
 

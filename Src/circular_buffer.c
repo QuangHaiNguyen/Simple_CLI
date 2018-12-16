@@ -49,7 +49,7 @@ void InitCirBuff( cir_buff * _this)
  */
 CirBuff_Status IsCirBuffEmpty(cir_buff * _this)
 {
-    return (0 == _this->count) ? EMPTY : OK;
+    return (0 == _this->count) ? CIR_EMPTY : CIR_OK;
 }
 
 /**
@@ -63,7 +63,7 @@ CirBuff_Status IsCirBuffEmpty(cir_buff * _this)
  */
 CirBuff_Status IsCirBuffFull(cir_buff * _this)
 {
-    return (_this->count == BUFF_SIZE) ? FULL : OK;
+    return (_this->count == BUFF_SIZE) ? CIR_FULL : CIR_OK;
 }
 
 /**
@@ -76,7 +76,7 @@ CirBuff_Status IsCirBuffFull(cir_buff * _this)
  *          + OK
  *          + FULL (buffer is full, data will be discarded)
  */
-CirBuff_Status PushCirBuff(cir_buff * _this, int data)
+CirBuff_Status PushCirBuff(cir_buff * _this, char data)
 {
     CirBuff_Status status;
     if(_this->count < BUFF_SIZE)//we still have space
@@ -84,11 +84,11 @@ CirBuff_Status PushCirBuff(cir_buff * _this, int data)
         _this->buff[_this->head] = data;
         _this->head = (++_this->head < BUFF_SIZE) ? _this->head : 0;
         _this->count = (++_this->count < BUFF_SIZE) ? _this->count : BUFF_SIZE;
-        status = OK;
+        status = CIR_OK;
     }
     else
     {
-        status = FULL;
+        status = CIR_FULL;
     }
     return status;
 }
@@ -103,7 +103,7 @@ CirBuff_Status PushCirBuff(cir_buff * _this, int data)
  *          + OK
  *          + EMPTY (buffer is empty)
  */
-CirBuff_Status PopCirBuff(cir_buff * _this, int * data)
+CirBuff_Status PopCirBuff(cir_buff * _this, char * data)
 {
     CirBuff_Status status;
     if(_this->count > 0)
@@ -111,11 +111,11 @@ CirBuff_Status PopCirBuff(cir_buff * _this, int * data)
         *data = _this->buff[_this->tail];
         _this->tail = (++_this->tail < BUFF_SIZE) ? _this->tail : 0;
         _this->count = (--_this->count > 0) ? _this->count : 0;
-        status = OK;
+        status = CIR_OK;
     }
     else
     {
-        status = EMPTY;
+        status = CIR_EMPTY;
     }
     return status;
 }
