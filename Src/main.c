@@ -44,7 +44,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
-#include "circular_buffer.h"
+#include "cli.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,7 +68,7 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 char c;
 
-cir_buff my_buff;
+CLI my_cli;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -116,13 +116,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
   printf("hey there\n");
   HAL_UART_Receive_IT(&huart2, (uint8_t *)&c, 1);
-  InitCirBuff(&my_buff);
+  CLI_Init(&my_cli);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  my_cli.CLI_ProcessData(&my_cli);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -235,17 +236,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart == &huart2)
 	{
-		PushCirBuff(&my_buff,(char) c);
-		if(c == '\n')
-		{
-			do
-			{
-				PopCirBuff(&my_buff, &c);
-				printf("%c", c);
-			}
-			while(c != '\n');
-
-		}
+		my_cli.CLI_PushDataToBuff(&my_cli, c);
 		HAL_UART_Receive_IT(&huart2, (uint8_t *)&c, 1);
 	}
 }

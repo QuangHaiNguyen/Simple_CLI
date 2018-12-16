@@ -42,6 +42,7 @@ typedef struct CLI
 	cir_buff mybuff;
 	CLI_Status (*CLI_PushDataToBuff)(struct CLI * self, char data);
 	CLI_Status (*CLI_ProcessData)(struct CLI *self);
+	CLI_Status (*CLI_PrintData)(struct CLI * self);
 }CLI;
 
 

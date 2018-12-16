@@ -11,7 +11,6 @@
 
 /* Include section ---------------------------------------------------*/
 #include "circular_buffer.h"
-#include <stdio.h>
 #include <string.h>
 
 /* Define section ---------------------------------------------------*/
