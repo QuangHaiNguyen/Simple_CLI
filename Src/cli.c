@@ -18,8 +18,15 @@
 
 
 /* Local variable section --------------------------------------------*/
+typedef enum STATE_MACHINE
+{
+	INIT = 0,
+	IDLE,
+	PROCESS,
+	ERROR,
+}State_Machine;
 
-
+State_Machine state = INIT;
 
 /* Local function prototype section ----------------------------------*/
 CLI_Status CLI_PushDataToBuff( CLI * self, char data);
@@ -62,9 +69,36 @@ CLI_Status CLI_PrintData(CLI * self)
 
 CLI_Status CLI_ProcessData(CLI *self)
 {
-	if(CIR_EMPTY != IsCirBuffEmpty(&(self->mybuff)))
+	switch(state)
 	{
-		self->CLI_PrintData(self);
+		case INIT:
+			state = IDLE;
+			break;//case INIT
+
+		case IDLE:
+			if(CIR_EMPTY != IsCirBuffEmpty(&(self->mybuff)))
+			{
+				self->CLI_PrintData(self);
+				state = PROCESS;
+			}
+			else
+			{
+				state = IDLE;
+			}
+			break;//case IDLE
+
+		case PROCESS:
+			//do nothing
+			state = IDLE;
+			break;//case PROCESS
+
+		case ERROR:
+			state = IDLE;
+			break;//case ERROR
+
+		default:
+			state = IDLE;
+			break;//case default
 	}
 	return CLI_OK;
 }
