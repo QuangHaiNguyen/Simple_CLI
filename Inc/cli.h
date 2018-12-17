@@ -25,13 +25,14 @@
 
 
 /* Define section ---------------------------------------------------*/
-
+#define MAX_COMMAND_LEN (10)
+#define COMMAND_TABLE_SIZE (4)
 
 
 /* Global variable section -------------------------------------------*/
  typedef enum CLI_Status
  {
-     CLI_OK = 0,
+    CLI_OK = 0,
  	CLI_ERROR,
  	CLI_BUFF_FULL,
  	CLI_BUFF_EMPTY
@@ -46,9 +47,20 @@ typedef struct CLI
 }CLI;
 
 
+typedef struct
+{
+	char const *name;
+	void (*function)(void);
+} command_t;
+
+
 
 /* Global function prototype section ---------------------------------*/
 CLI_Status CLI_Init(CLI * self);
+void CommandHelp(void);
+void CommandLed(void);
+void CommandBuzzer(void);
+
 
 
 #ifdef __cplusplus
